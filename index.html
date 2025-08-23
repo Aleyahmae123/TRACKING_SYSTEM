@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>AURO NOTIFY</title>
+
+  <!-- simple styling file -->
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- application logic -->
+  <script src="app.js"></script>
+
+  <!-- Chart.js CDN (for charts) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="brand">
+        <div class="logo">✔</div>
+        <div class="brand-name">AURO</div>
+      </div>
+
+    <nav class="nav">
+  <button class="nav-item active" data-section="dashboard">
+    <span class="icon dashboard">📊</span> Dashboard
+  </button>
+  <button class="nav-item" data-section="calendar">
+    <span class="icon calendar">📅</span> Calendar
+  </button>
+  <button class="nav-item" data-section="workflow">
+    <span class="icon workflow">🔀</span> Workflow
+  </button>
+  <button class="nav-item" data-section="hashtags">
+    <span class="icon hashtags">#️</span> Hashtags
+  </button>
+  <button class="nav-item" data-section="ugc">
+    <span class="icon ugc">🔎</span> UGC Tracker
+  </button>
+  <button class="nav-item" data-section="settings">
+    <span class="icon settings">⛯</span> Settings
+  </button>
+</nav>
+
+    </aside>
+
+    <div class="main">
+      <header class="header">
+        <h1>VIBES Academic Clubs — KPI Monitor</h1>
+        <div class="header-actions">
+          <label class="role-label">Role:
+            <select id="roleSelect">
+              <option>Admin</option>
+              <option>Contributor</option>
+              <option>Officer</option>
+            </select>
+          </label>
+          <button id="exportCsvBtn" class="btn small">Export CSV</button>
+      
+          <!-- DARK MODE -->
+        <div class="header-actions">
+        </label>
+        <button id="darkModeToggle" class="btn small">🌙 Dark Mode</button>
+        </div>
+        
+
+
+      </header>
+
+      <main class="content-area">
+        <!-- Dashboard section -->
+        <section id="dashboard" class="section active">
+            
+            <div class="kpi-card">
+            <div class="kpi-title">Email Sign-ups</div>
+            <div id="emailsVal" class="kpi-value">—</div>
+            <div class="kpi-sub">Target: <span id="emailsTarget"></span></div>
+            </div>
+
+        <div class="kpi-card">
+        <div class="kpi-title">UGC Posts</div>
+        <div id="ugcVal" class="kpi-value">—</div>
+        <div class="kpi-sub">Submissions tracked</div>
+        </div>
+
+          <div class="kpi-row">
+            <div class="kpi-card">
+              <div class="kpi-title">Followers</div>
+              <div id="followersVal" class="kpi-value">—</div>
+              <div class="kpi-sub">Target: <span id="followersTarget"></span></div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-title">Engagement</div>
+              <div id="engagementVal" class="kpi-value">—</div>
+              <div class="kpi-sub">Target: <span id="engagementTarget"></span>%</div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-title">Monthly Reach</div>
+              <div id="reachVal" class="kpi-value">—</div>
+              <div class="kpi-sub">Target: <span id="reachTarget"></span></div>
+            </div>
+            <div class="kpi-card">
+              <div class="kpi-title">Campus Visits</div>
+              <div id="visitsVal" class="kpi-value">—</div>
+              <div class="kpi-sub">Target: <span id="visitsTarget"></span></div>
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-title">Reach & Engagement</div>
+              <canvas id="reachChart" height="160"></canvas>
+            </div>
+
+            <div class="card">
+              <div class="card-title">Audience Mix</div>
+              <canvas id="audiencePie" height="160"></canvas>
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div class="card">
+              <div class="card-title">August — Content Calendar</div>
+              <div id="calendarGrid" class="calendar-grid"></div>
+            </div>
+
+            <div class="card">
+              <div class="card-title">Templates & Branding Guide</div>
+              <div id="templatesArea">
+                <!-- template cards inserted here -->
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Calendar section (separate view) -->
+        <section id="calendar" class="section">
+          <div class="card">
+            <div class="card-title">Content Calendar (August)</div>
+            <div id="calendarGridLarge" class="calendar-grid"></div>
+          </div>
+        </section>
+
+        <!-- Workflow section -->
+        <section id="workflow" class="section">
+          <div class="card">
+            <div class="card-title">Workflow Kanban</div>
+            <div id="kanban" class="kanban-grid"></div>
+          </div>
+        </section>
+
+        <!-- Hashtag planner -->
+        <section id="hashtags" class="section">
+          <div class="card">
+            <div class="card-title">Hashtag Planner</div>
+            <div class="hashtag-controls">
+              <input id="tagInput" placeholder="#Vibes #Enrollment" />
+              <button id="addTagBtn" class="btn editable">Add</button>
+            </div>
+            <div id="tagsList" class="tags-list"></div>
+          </div>
+        </section>
+
+        <!-- UGC tracker -->
+        <section id="ugc" class="section">
+          <div class="card">
+            <div class="card-title">UGC Submissions</div>
+            <div class="ugc-form editable">
+              <input id="ugcName" placeholder="Student name" />
+              <select id="ugcClub"></select>
+              <input id="ugcLink" placeholder="Link to post" />
+              <input id="ugcNotes" placeholder="Notes (optional)" />
+              <button id="submitUGC" class="btn editable">Submit UGC</button>
+            </div>
+            <div class="table-wrap">
+              <table id="ugcTable">
+                <thead>
+                  <tr><th>Student</th><th>Club</th><th>Link</th><th>Notes</th><th>Status</th></tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- Settings -->
+        <section id="settings" class="section">
+          <div class="card">
+            <div class="card-title">Settings</div>
+            <p>Upload logos and set club colors here (for now, edit `app.js` -> <code>styleGuides</code>).</p>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+    <label class="role-label">Role:
+    <select id="roleSelect">
+    <option value="admin">Admin (PIOs, OSAD, Marketing)</option>
+    <option value="contributor">Contributor (BIUs)</option>
+    <option value="officer">Officer (View Only)</option>
+    </select>
+    </label>
+
+
+
+
+
+
+
+
+</body>
+</html>
